@@ -5,21 +5,43 @@ const botaoCurto = document.querySelector('.app__card-button--curto');
 const botaoLongo = document.querySelector('.app__card-button--longo');
 const banner = document.querySelector('.app__image');
 const titulo = document.querySelector('.app__title');
+const botoes = document.querySelectorAll('.app__card-button');
+const musicaFocoInput = document.querySelector('#alternar-musica');
+const musica = new Audio('/sons/luna-rise-part-one.mp3');
+
+musicaFocoInput.addEventListener('change', () => {
+    if(musica.paused){
+        musica.play();
+    }
+    else{
+        musica.pause();
+    }
+});
 
 //cria um evento de clique para os botoes, no qual ao clicarmos muda o atributo da html
 botaoFoco.addEventListener('click', () =>{
     alterarContexto('foco');
+    botaoFoco.classList.add('active');
+    
 });
 
 botaoCurto.addEventListener('click', () => {
     alterarContexto('descanso-curto');
+    botaoCurto.classList.add('active');
+    
 });
 
 botaoLongo.addEventListener('click', () => {
     alterarContexto('descanso-longo');
+    botaoLongo.classList.add('active');
+    
 });
 
 function alterarContexto(contexto){
+
+    botoes.forEach(function(contexto){
+        contexto.classList.remove('active');
+    });
     html.setAttribute('data-contexto', contexto)
     banner.setAttribute('src', `./imagens/${contexto}.png`)
     switch (contexto) {
