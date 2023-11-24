@@ -8,6 +8,16 @@ const titulo = document.querySelector('.app__title');
 const botoes = document.querySelectorAll('.app__card-button');
 const musicaFocoInput = document.querySelector('#alternar-musica');
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
+const somPlay = new Audio('/sons/play.wav');
+const somPause = new Audio('/sons/pause.mp3');
+const somZero = new Audio('/sons/beep.mp3');
+const botaoStartPause = document.querySelector('#start-pause');
+
+musica.loop = true;
+somPlay.pause = true;
+
+let tempoDecorridoEmSegundos = 5;
+let intervaloId = null;
 
 musicaFocoInput.addEventListener('change', () => {
     if(musica.paused){
@@ -62,4 +72,39 @@ function alterarContexto(contexto){
             break;
     }
 
+}
+
+const contagemRegressiva = () => {
+    //ao chegar em 0 no temporizador além de tocar o som e interromper a execução do interval ele reseta o tempo  
+    if(tempoDecorridoEmSegundos <= 0){
+        somZero.play();
+        zerar();
+        alert("Tempo Finalizado!");
+        tempoDecorridoEmSegundos = 5;
+        return
+        
+    }
+    tempoDecorridoEmSegundos -= 1;
+    console.log('Temporizador:' + tempoDecorridoEmSegundos);
+}
+
+botaoStartPause.addEventListener('click', iniciarPausar);
+
+function iniciarPausar(){
+    //se houver algum valor no intervaloId ele tocará o som e interromperá a execução da contagem
+    if(intervaloId){
+        somPause.play();
+        zerar();
+        return
+    }
+    //irá tocar um som ao clique do botão e executará a subtração do tempo a cada 1000 milisegundos 1s
+    somPlay.play();
+    intervaloId = setInterval(contagemRegressiva, 1000);
+}
+
+//interrompe a execução da contagem assim que for chamada a função
+function zerar(){
+    clearInterval(intervaloId);
+    intervaloId = null;
+    
 }
