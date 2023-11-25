@@ -7,6 +7,8 @@ const banner = document.querySelector('.app__image');
 const titulo = document.querySelector('.app__title');
 const botoes = document.querySelectorAll('.app__card-button');
 const musicaFocoInput = document.querySelector('#alternar-musica');
+const botaoComecarPausar = document.querySelector('#start-pause span')
+const iconeTroca = document.querySelector('.app__card-primary-butto-icon')
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
 const somPlay = new Audio('/sons/play.wav');
 const somPause = new Audio('/sons/pause.mp3');
@@ -78,14 +80,17 @@ const contagemRegressiva = () => {
     //ao chegar em 0 no temporizador além de tocar o som e interromper a execução do interval ele reseta o tempo  
     if(tempoDecorridoEmSegundos <= 0){
         somZero.play();
-        zerar();
         alert("Tempo Finalizado!");
+        zerar();
         tempoDecorridoEmSegundos = 5;
         return
         
     }
+    botaoComecarPausar.textContent = "Pausar";
+    iconeTroca.setAttribute('src', '/imagens/pause.png');
     tempoDecorridoEmSegundos -= 1;
     console.log('Temporizador:' + tempoDecorridoEmSegundos);
+    
 }
 
 botaoStartPause.addEventListener('click', iniciarPausar);
@@ -106,5 +111,6 @@ function iniciarPausar(){
 function zerar(){
     clearInterval(intervaloId);
     intervaloId = null;
-    
+    botaoComecarPausar.textContent = "Começar";
+    iconeTroca.setAttribute('src', '/imagens/play_arrow.png');
 }
