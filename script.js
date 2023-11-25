@@ -7,8 +7,9 @@ const banner = document.querySelector('.app__image');
 const titulo = document.querySelector('.app__title');
 const botoes = document.querySelectorAll('.app__card-button');
 const musicaFocoInput = document.querySelector('#alternar-musica');
-const botaoComecarPausar = document.querySelector('#start-pause span')
-const iconeTroca = document.querySelector('.app__card-primary-butto-icon')
+const botaoComecarPausar = document.querySelector('#start-pause span');
+const iconeTroca = document.querySelector('.app__card-primary-butto-icon');
+const tempoNaTela = document.getElementById('timer');
 const musica = new Audio('/sons/luna-rise-part-one.mp3');
 const somPlay = new Audio('/sons/play.wav');
 const somPause = new Audio('/sons/pause.mp3');
@@ -18,7 +19,7 @@ const botaoStartPause = document.querySelector('#start-pause');
 musica.loop = true;
 somPlay.pause = true;
 
-let tempoDecorridoEmSegundos = 5;
+let tempoDecorridoEmSegundos = 1500;
 let intervaloId = null;
 
 musicaFocoInput.addEventListener('change', () => {
@@ -32,25 +33,28 @@ musicaFocoInput.addEventListener('change', () => {
 
 //cria um evento de clique para os botoes, no qual ao clicarmos muda o atributo da html
 botaoFoco.addEventListener('click', () =>{
+    tempoDecorridoEmSegundos = 1500;
     alterarContexto('foco');
     botaoFoco.classList.add('active');
     
 });
 
 botaoCurto.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 300;
     alterarContexto('descanso-curto');
     botaoCurto.classList.add('active');
     
 });
 
 botaoLongo.addEventListener('click', () => {
+    tempoDecorridoEmSegundos = 900;
     alterarContexto('descanso-longo');
     botaoLongo.classList.add('active');
     
 });
 
 function alterarContexto(contexto){
-
+    mostrarTempo();
     botoes.forEach(function(contexto){
         contexto.classList.remove('active');
     });
@@ -82,14 +86,13 @@ const contagemRegressiva = () => {
         somZero.play();
         alert("Tempo Finalizado!");
         zerar();
-        tempoDecorridoEmSegundos = 5;
         return
         
     }
     botaoComecarPausar.textContent = "Pausar";
     iconeTroca.setAttribute('src', '/imagens/pause.png');
     tempoDecorridoEmSegundos -= 1;
-    console.log('Temporizador:' + tempoDecorridoEmSegundos);
+    mostrarTempo();
     
 }
 
@@ -114,3 +117,11 @@ function zerar(){
     botaoComecarPausar.textContent = "Começar";
     iconeTroca.setAttribute('src', '/imagens/play_arrow.png');
 }
+
+function mostrarTempo(){
+    const tempo = new Date(tempoDecorridoEmSegundos * 1000);
+    const TempoFormatado = tempo.toLocaleString('pt-Br', {minute: '2-digit', second: '2-digit'});
+    tempoNaTela.innerHTML = `${TempoFormatado}`;
+}
+
+mostrarTempo();
