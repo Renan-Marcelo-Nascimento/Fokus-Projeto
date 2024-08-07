@@ -19,7 +19,7 @@ const botaoStartPause = document.querySelector('#start-pause');
 musica.loop = true;
 somPlay.pause = true;
 
-let tempoDecorridoEmSegundos = 1500;
+let tempoDecorridoEmSegundos = 30;
 let intervaloId = null;
 
 musicaFocoInput.addEventListener('change', () => {
@@ -33,7 +33,7 @@ musicaFocoInput.addEventListener('change', () => {
 
 //cria um evento de clique para os botoes, no qual ao clicarmos muda o atributo da html
 botaoFoco.addEventListener('click', () =>{
-    tempoDecorridoEmSegundos = 1500;
+    tempoDecorridoEmSegundos = 30;
     alterarContexto('foco');
     botaoFoco.classList.add('active');
     
@@ -85,6 +85,12 @@ const contagemRegressiva = () => {
     if(tempoDecorridoEmSegundos <= 0){
         somZero.play();
         alert("Tempo Finalizado!");
+        const focoAtivo = html.getAttribute('data-contexto') == 'foco';
+        if(focoAtivo){
+            const evento = new CustomEvent('FocoFinalizado');
+            document.dispatchEvent(evento)
+        }
+
         zerar();
         return
         
